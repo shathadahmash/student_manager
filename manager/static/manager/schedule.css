@@ -1,0 +1,69 @@
+.schedule-slots{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0 0 22px}
+.schedule-slots>div{padding:13px 15px;border:1px solid #e4eaf3;border-radius:9px;background:#f8faff}
+.schedule-slots strong,.schedule-slots small{display:block}
+.schedule-slots strong{font:700 12px Manrope,sans-serif;color:#314362}
+.schedule-slots small{margin-top:4px;color:#8b97aa;font-size:10px}
+.schedule-note{margin:0 0 20px;padding:11px 13px;border-radius:8px;background:#f4f7fc;color:#6d7b91;font-size:11px;line-height:1.6}
+.today-exam{padding:11px 0;border-top:1px solid #f0f2f5}
+.today-exam:first-of-type{border-top:0;padding-top:0}
+.today-exam-heading{display:flex;align-items:center;gap:9px}
+.today-exam-heading>div{min-width:0;flex:1}
+.today-exam-heading strong,.today-exam-heading small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.today-exam-heading strong{font-size:12px}
+.today-exam-heading small{margin-top:3px;color:#758198;font-size:10px}
+.today-exam-heading time{color:#727f95;font-size:10px;white-space:nowrap}
+.today-students{display:grid;gap:4px;padding:8px 0 0 17px}
+.today-students strong{font-size:9px;color:#8792a5;text-transform:uppercase;letter-spacing:.5px}
+.today-students span{font-size:10px;color:#526078;overflow-wrap:anywhere}
+.attendance-row{margin:0}
+.attendance-row label{display:flex;align-items:center;gap:8px;margin:0;color:#43516a;font-size:11px;font-weight:500;cursor:pointer}
+.attendance-row input[type=checkbox]{width:15px;height:15px;margin:0;accent-color:#3566e8;cursor:pointer}
+.panel-actions{display:flex;align-items:center;gap:14px}
+@media(max-width:520px){.panel-actions{align-items:flex-end;flex-direction:column;gap:6px}}
+@media(max-width:520px){.schedule-slots{grid-template-columns:1fr}}
+.report-date-form{display:flex;align-items:end;gap:8px}
+.report-date-form label{margin:0}
+.report-date-form .field{min-width:155px;margin-top:0}
+.attendance-summary{margin:0 0 17px}
+.attendance-summary{grid-template-columns:repeat(5,minmax(0,1fr))}
+.attendance-report-panel{margin-bottom:16px}
+.report-lecture-meta{text-align:right;color:#586782;font-size:11px;font-weight:700}
+.report-lecture-meta span{display:block;color:#8a96a9;font-size:10px;font-weight:500;margin-top:4px}
+@media(max-width:900px){.attendance-summary{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.attendance-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.report-date-form{align-items:stretch;flex-direction:column}.report-date-form .field{min-width:0}}
+@media(max-width:760px){.report-date-form{align-items:stretch;width:100%;flex-wrap:wrap}.report-date-form label{width:100%}.report-date-form .field{flex:1}}
+.calendar-filter{display:flex;align-items:end;gap:10px}
+.calendar-filter label{min-width:160px;margin:0}
+.calendar-filter .field{margin-top:5px}
+.calendar-panel{padding:18px}
+.calendar-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.calendar-toolbar h2{margin:0;font:700 17px Manrope,sans-serif}
+.calendar-legend{display:flex;flex-wrap:wrap;gap:15px;margin-bottom:13px;color:#758198;font-size:10px}
+.calendar-legend span{display:flex;align-items:center;gap:5px}
+.calendar-dot{width:9px;height:9px;border-radius:50%;background:#4778f4}
+.calendar-dot.complete{background:#16845d}
+.calendar-dot.incomplete{background:#c64e4e}
+.calendar-scroll{overflow-x:auto}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(110px,1fr));min-width:780px;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.calendar-weekday{padding:9px;text-align:center;background:#fafbfd;color:#8792a5;font-size:10px;font-weight:700;text-transform:uppercase;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.calendar-day{min-height:132px;padding:7px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+.calendar-day.outside-month{background:#f8f9fb;color:#a8b0be}
+.calendar-day.today{background:#f4f7ff}
+.calendar-day-number{font-size:11px;font-weight:700;color:#66748b;margin:0 0 6px}
+.calendar-day.today .calendar-day-number{color:var(--blue)}
+.calendar-event{display:block;margin:4px 0;padding:5px 6px;border-radius:5px;text-decoration:none;border-left:3px solid #4778f4;background:#eef3ff;color:#32415c;overflow:hidden}
+.calendar-event strong,.calendar-event small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.calendar-event strong{font-size:9px}
+.calendar-event small{font-size:8px;margin-top:3px;opacity:.8}
+.calendar-event.complete{border-color:#16845d;background:#e6f6ef;color:#116a4b}
+.calendar-event.incomplete{border-color:#c64e4e;background:#fff0ef;color:#a33d3d}
+.calendar-event.upcoming{border-color:#4778f4;background:#eef3ff;color:#324f9c}
+.completion-panel{max-width:760px}
+.completion-list{display:grid}
+.completion-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0;padding:12px 4px;border-top:1px solid #eef0f4}
+.completion-row label{display:flex;align-items:center;gap:10px;margin:0;cursor:pointer}
+.completion-row input[type=checkbox]{width:17px;height:17px;accent-color:#16845d}
+.completion-row label span,.completion-row strong,.completion-row small{display:block}
+.completion-row label span{color:#43516a;font-size:11px}
+.completion-row small{margin-top:3px;color:#8994a6;font-size:10px;font-weight:400}
+@media(max-width:760px){.calendar-intro{align-items:stretch;flex-direction:column;gap:12px}.calendar-filter{align-items:stretch;flex-wrap:wrap}.calendar-filter label{flex:1;min-width:130px}}

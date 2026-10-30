@@ -1,0 +1,42 @@
+{% extends 'manager/base.html' %}
+{% block title %}Section calendar{% endblock %}
+{% block page_title %}Section calendar{% endblock %}
+{% block content %}
+<div class="page-intro split calendar-intro">
+  <p>View lectures, homework, assignments and exams by section. Open an event to update each student's status.</p>
+  <form class="calendar-filter" method="get">
+    <label>{{ form.section.label }}{{ form.section }}</label>
+    <label>{{ form.month.label }}{{ form.month }}</label>
+    <button class="button secondary" type="submit">Show calendar</button>
+  </form>
+</div>
+{% if form.errors %}<div class="message error">{{ form.errors }}</div>{% endif %}
+<section class="panel calendar-panel">
+  <div class="calendar-toolbar">
+    <a class="button secondary" href="?month={{ previous_month|date:'Y-m' }}{% if selected_section %}&section={{ selected_section.pk }}{% endif %}">← Previous</a>
+    <h2>{{ month_start|date:"F Y" }}</h2>
+    <a class="button secondary" href="?month={{ next_month|date:'Y-m' }}{% if selected_section %}&section={{ selected_section.pk }}{% endif %}">Next →</a>
+  </div>
+  <div class="calendar-legend">
+    <span><i class="calendar-dot complete"></i> Done</span>
+    <span><i class="calendar-dot incomplete"></i> Not done</span>
+    <span><i class="calendar-dot upcoming"></i> Lecture not started</span>
+  </div>
+  <div class="calendar-scroll">
+    <div class="calendar-grid">
+      <div class="calendar-weekday">Mon</div><div class="calendar-weekday">Tue</div><div class="calendar-weekday">Wed</div><div class="calendar-weekday">Thu</div><div class="calendar-weekday">Fri</div><div class="calendar-weekday">Sat</div><div class="calendar-weekday">Sun</div>
+      {% for week in weeks %}{% for day in week %}
+      <div class="calendar-day{% if not day.in_month %} outside-month{% endif %}{% if day.is_today %} today{% endif %}">
+        <div class="calendar-day-number">{{ day.date|date:"j" }}</div>
+        {% for event in day.events %}
+        <a class="calendar-event {{ event.status }} {{ event.kind }}" href="{% url 'calendar_event' event.event_type event.event_id event.date|date:'Y-m-d' %}" title="{{ event.section_name }} · {{ event.title }} · {{ event.done_count }}/{{ event.total_count }} done">
+          <strong>{{ event.time_label }} · {{ event.title }}</strong>
+          <small>{{ event.section_name }} · {{ event.done_count }}/{{ event.total_count }} done</small>
+        </a>
+        {% endfor %}
+      </div>
+      {% endfor %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

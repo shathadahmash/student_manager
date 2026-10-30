@@ -1,0 +1,22 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Django and local data
+.env
+.env.*
+!.env.example
+*.sqlite3
+staticfiles/
+media/
+
+# Student data imports
+*.xlsx
+*.xls
+
+# Test and tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

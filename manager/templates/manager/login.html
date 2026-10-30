@@ -1,0 +1,35 @@
+{% extends 'manager/base.html' %}
+{% block title %}Sign in{% endblock %}
+{% block content %}
+<section class="login-wrap">
+  <div class="login-layout">
+    <div class="login-story">
+      <a class="brand login-brand" href="{% url 'login' %}"><span class="brand-mark">C</span><span>Campus Desk<small>ACADEMIC MANAGER</small></span></a>
+      <div class="login-message">
+        <span class="eyebrow">YOUR CAMPUS, IN ONE PLACE</span>
+        <h1>Make room for<br>great learning.</h1>
+        <p>Keep student records, lectures and important deadlines organized from one simple workspace.</p>
+        <div class="login-visual" aria-hidden="true">
+          <div class="visual-card visual-card-back"><span></span><i></i><i></i><i></i></div>
+          <div class="visual-card visual-card-front"><span class="visual-icon">C</span><strong>Campus overview</strong><small>Everything in its place</small><div class="visual-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+          <span class="visual-orbit orbit-one"></span><span class="visual-orbit orbit-two"></span>
+        </div>
+      </div>
+      <span class="login-footer">A calmer way to manage the school day.</span>
+    </div>
+    <div class="login-card">
+      <div class="login-card-heading"><span class="login-mobile-mark">C</span><span class="eyebrow">STAFF ACCESS</span><h2>Welcome back</h2><p class="muted">Enter your details to access your workspace.</p></div>
+      <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}<div class="message error">Username or password is incorrect.</div>{% endif %}
+        {% for field in form %}
+          <label>{{ field.label }}{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</label>
+        {% endfor %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <button class="button primary full" type="submit">Sign in <span aria-hidden="true">→</span></button>
+      </form>
+      <p class="security-note"><span aria-hidden="true">●</span> Secure local staff access. Student passwords are never displayed.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

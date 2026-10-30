@@ -1,0 +1,61 @@
+{% extends 'manager/base.html' %}
+{% block title %}{{ lecture.title }}{% endblock %}
+{% block page_title %}{{ lecture.title }}{% endblock %}
+{% block content %}
+<div class="page-intro split">
+    <p>
+        {{ lecture.section.group_number|default:lecture.section.name }}
+        {% if lecture.weekday != None %}· Every {{ lecture.get_weekday_display }}{% else %}· {{ lecture.scheduled_start|date:"D, M j, Y" }}{% endif %}
+        · {% if lecture.slot %}{{ lecture.get_slot_display }}{% else %}{{ lecture.scheduled_start|date:"g:i A" }}–{{ lecture.scheduled_end|date:"g:i A" }}{% endif %}
+    </p>
+    <div class="actions">
+        <a class="button secondary" href="{% url 'lecture_edit' lecture.pk %}">Edit day</a>
+        <a class="button secondary" href="{% url 'lectures' %}">Back to lectures</a>
+    </div>
+</div>
+<section class="panel">
+    <div class="panel-heading">
+        <div><span class="eyebrow">LECTURE ROSTER</span><h2>{{ enrollments|length }} student{{ enrollments|length|pluralize }}</h2></div>
+    </div>
+    {% if lecture.weekday != None %}
+        <p class="schedule-note">Students in this section are assigned to weekly lectures automatically.</p>
+    {% else %}
+        <form method="post" class="inline-form">
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="message error">{{ form.non_field_errors }}</div>{% endif %}
+            <label>{{ form.student.label }}{{ form.student }}{% for error in form.student.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</label>
+            <button class="button primary" type="submit" name="assign" value="1">Add student</button>
+        </form>
+    {% endif %}
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Student</th><th>Academic number</th><th>Status</th>{% if lecture.weekday == None %}<th>Actions</th>{% endif %}</tr></thead>
+            <tbody>
+                {% for enrollment in enrollments %}
+                    <tr>
+                        <td>{{ enrollment.student.full_name|default:enrollment.student.email }}</td>
+                        <td>{{ enrollment.student.academic_number }}</td>
+                        <td>{% if enrollment.completed %}Completed{% else %}In progress{% endif %}</td>
+                        {% if lecture.weekday == None %}
+                            <td class="actions">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="enrollment_id" value="{{ enrollment.pk }}">
+                                    <button class="button secondary" type="submit" name="toggle_completion" value="1">{% if enrollment.completed %}Mark in progress{% else %}Mark complete{% endif %}</button>
+                                </form>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="enrollment_id" value="{{ enrollment.pk }}">
+                                    <button class="danger-link" type="submit" name="remove_enrollment" value="1">Remove</button>
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="{% if lecture.weekday == None %}4{% else %}3{% endif %}" class="empty-cell">No students are assigned to this lecture yet.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

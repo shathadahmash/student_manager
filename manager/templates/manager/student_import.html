@@ -1,0 +1,24 @@
+{% extends 'manager/base.html' %}
+{% block title %}Import students{% endblock %}
+{% block page_title %}Import students{% endblock %}
+{% block content %}
+<div class="page-intro"><p>Upload an .xlsx workbook to add students and organize them by group.</p></div>
+<section class="panel form-panel import-panel">
+  <div class="panel-heading"><div><span class="eyebrow">BULK IMPORT</span><h2>Choose your workbook</h2></div><span class="import-file-icon">XLSX</span></div>
+  <p class="import-copy">The workbook should include the student name, email, password, specialization, group, period and university number columns. Other columns are ignored.</p>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+      <label class="{% if field.name == 'update_existing' %}import-update-option{% endif %}">{{ field }}{{ field.label }}{% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}{% if field.name == 'file' %}<small class="help-text">Maximum file size: 5 MB. Passwords are immediately converted to one-way hashes.</small>{% endif %}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</label>
+    {% endfor %}
+    <div class="form-actions"><a class="button secondary" href="{% url 'students' %}">Back to students</a><button class="button primary" type="submit">Import students</button></div>
+  </form>
+</section>
+{% if imported != None %}
+<section class="panel import-results">
+  <div class="panel-heading"><div><span class="eyebrow">IMPORT COMPLETE</span><h2>{{ imported }} student{{ imported|pluralize }} imported{% if updated %}; {{ updated }} updated{% endif %}</h2></div><a class="text-link" href="{% url 'students' %}">View student list</a></div>
+  {% if issues %}<p class="import-copy">{{ issue_count }} row{{ issue_count|pluralize }} were skipped and need attention:</p><ul class="import-issues">{% for issue in issues %}<li>{{ issue }}</li>{% endfor %}</ul>{% else %}<p class="import-copy">All student rows were imported successfully.</p>{% endif %}
+</section>
+{% endif %}
+<p class="privacy-banner"><strong>Credential safety:</strong> password cells are used only to set each student's initial password and are never shown or stored as plain text. The uploaded workbook is not saved by the app.</p>
+{% endblock %}

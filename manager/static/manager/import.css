@@ -1,0 +1,15 @@
+.page-actions{display:flex;gap:8px}
+.import-panel,.import-results{max-width:690px}
+.import-panel .panel-heading{margin-bottom:12px}
+.import-panel h2,.import-results h2{font:700 16px Manrope,sans-serif;margin:5px 0 0}
+.import-file-icon{display:grid;place-items:center;width:48px;height:44px;border-radius:10px;background:#eaf0ff;color:#3566e8;font-size:10px;font-weight:800;letter-spacing:.5px}
+.import-copy{color:#758198;font-size:12px;line-height:1.7;margin:0 0 18px}
+.import-results{margin-top:17px}
+.import-results .panel-heading{margin-bottom:12px}
+.import-issues{margin:0;padding:0 0 0 19px;color:#725d3b;font-size:11px;line-height:1.8}
+.import-issues li+li{margin-top:4px}
+.import-update-option{padding:12px;border:1px solid #e4eaf3;border-radius:8px;background:#f8faff}
+.import-update-option input{margin:0 7px 0 0;vertical-align:middle}
+.import-update-option .help-text{padding-left:22px}
+@media(max-width:760px){.page-actions{flex-wrap:wrap}.page-actions .button{padding:9px 11px;font-size:11px}}
+@media(max-width:430px){.page-actions{width:100%}}

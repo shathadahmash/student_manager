@@ -1,0 +1,76 @@
+{% extends 'manager/base.html' %}
+{% block title %}Lectures{% endblock %}
+{% block page_title %}Lectures{% endblock %}
+{% block content %}
+<div class="page-intro split lecture-list-intro">
+    <p>Browse scheduled lectures by section and day.</p>
+    <a class="button primary" href="{% url 'lecture_create' %}">Set section schedule</a>
+</div>
+
+<section class="panel lecture-filter-panel">
+    <form class="lecture-filter-form" method="get">
+        <label>
+            {{ filter_form.section.label|default:"Section" }}
+            {{ filter_form.section }}
+        </label>
+        <label>
+            {{ filter_form.weekday.label|default:"Day" }}
+            {{ filter_form.weekday }}
+        </label>
+        <button class="button secondary" type="submit">Filter lectures</button>
+        {% if request.GET %}<a class="lecture-clear-filter" href="{% url 'lectures' %}">Clear filters</a>{% endif %}
+    </form>
+    {% if filter_form.errors %}<div class="message error">{{ filter_form.errors }}</div>{% endif %}
+</section>
+
+<div class="lecture-results-heading">
+    <h2>Scheduled lectures</h2>
+    <span>{{ lectures|length }} lecture{{ lectures|length|pluralize }}</span>
+</div>
+
+{% if lectures %}
+    <div class="lecture-cards">
+        {% for lecture in lectures %}
+            <article class="lecture-list-card">
+                <div class="lecture-list-card-top">
+                    <span class="lecture-subject-label">SUBJECT</span>
+                    <span class="badge">{{ lecture.section.group_number|default:lecture.section.name }}</span>
+                </div>
+                <h3>{{ lecture.title }}</h3>
+                <div class="lecture-card-details">
+                    <div>
+                        <span class="lecture-detail-label">Section</span>
+                        <strong>{{ lecture.section.name }}{% if lecture.section.group_number %} · Group {{ lecture.section.group_number }}{% endif %}</strong>
+                    </div>
+                    <div>
+                        <span class="lecture-detail-label">Day</span>
+                        <strong>{% if lecture.weekday != None %}Every {{ lecture.get_weekday_display }}{% else %}{{ lecture.scheduled_start|date:"l, M j, Y" }}{% endif %}</strong>
+                    </div>
+                    <div>
+                        <span class="lecture-detail-label">Time</span>
+                        <strong>{% if lecture.slot %}{{ lecture.get_slot_display }}{% else %}{{ lecture.scheduled_start|date:"g:i A" }} - {{ lecture.scheduled_end|date:"g:i A" }}{% endif %}</strong>
+                    </div>
+                    <div>
+                        <span class="lecture-detail-label">Location</span>
+                        <strong>{{ lecture.location|default:"Not specified" }}</strong>
+                    </div>
+                    <div>
+                        <span class="lecture-detail-label">Students</span>
+                        <strong>{{ lecture.enrollments.count }}</strong>
+                    </div>
+                </div>
+                <div class="lecture-card-actions">
+                    <a class="button secondary" href="{% url 'lecture_detail' lecture.pk %}">View roster</a>
+                    <a class="lecture-edit-link" href="{% url 'lecture_edit' lecture.pk %}">Edit</a>
+                    <a class="lecture-delete-link" href="{% url 'lecture_delete' lecture.pk %}">Delete</a>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <section class="panel lecture-empty-state">
+        <h2>No lectures found</h2>
+        <p>{% if request.GET %}Try changing or clearing the selected filters.{% else %}Set up a section schedule to see lectures here.{% endif %}</p>
+    </section>
+{% endif %}
+{% endblock %}

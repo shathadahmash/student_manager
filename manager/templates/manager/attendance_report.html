@@ -1,0 +1,74 @@
+{% extends 'manager/base.html' %}
+{% block title %}Attendance report{% endblock %}
+{% block page_title %}Attendance report{% endblock %}
+{% block content %}
+<div class="page-intro split">
+  <p>Choose a day to see lecture and exam attendance, including students who are still unchecked.</p>
+  <form class="report-date-form" method="get">
+    <label for="{{ form.date.id_for_label }}">{{ form.date.label }}</label>
+    {{ form.date }}
+    <button class="button secondary" type="submit">Show report</button>
+  </form>
+</div>
+{% if form.date.errors %}<div class="message error">{{ form.date.errors }}</div>{% endif %}
+<section class="stats-grid attendance-summary">
+  <article class="stat-card"><span>Lectures</span><strong>{{ totals.lectures }}</strong><small>{{ report_date|date:"l, F j, Y" }}</small></article>
+  <article class="stat-card"><span>Exams</span><strong>{{ totals.exams }}</strong><small>Scheduled on this day</small></article>
+  <article class="stat-card"><span>Students on rosters</span><strong>{{ totals.students }}</strong><small>Across this day's lectures and exams</small></article>
+  <article class="stat-card"><span>Checked in</span><strong>{{ totals.present }}</strong><small>Attendance recorded</small></article>
+  <article class="stat-card alert-stat"><span>Not checked in</span><strong>{{ totals.absent }}</strong><small>No attendance recorded</small></article>
+</section>
+{% for lecture in lectures %}
+<section class="panel attendance-report-panel">
+  <div class="panel-heading">
+    <div><span class="eyebrow">{{ lecture.section.name }} · {% if lecture.weekday != None %}Every {{ lecture.get_weekday_display }}{% else %}{{ lecture.scheduled_start|date:"D, M j, Y" }}{% endif %}</span><h2>{{ lecture.title }}</h2></div>
+    <div class="report-lecture-meta">{% if lecture.slot %}{{ lecture.get_slot_display }}{% else %}{{ lecture.scheduled_start|date:"g:i A" }}–{{ lecture.scheduled_end|date:"g:i A" }}{% endif %}<span>{{ lecture.present_count }} / {{ lecture.report_enrollments|length }} checked in</span></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Student</th><th>Academic no.</th><th>Attendance</th><th>Time checked</th></tr></thead>
+      <tbody>
+      {% for enrollment in lecture.report_enrollments %}
+        <tr>
+          <td><strong>{{ enrollment.student.full_name|default:enrollment.student.email }}</strong><small class="table-sub">{{ enrollment.student.email }}</small></td>
+          <td>{{ enrollment.student.academic_number }}</td>
+          <td>{% if enrollment.attended_on_date %}<span class="status-pill complete">Checked in</span>{% else %}<span class="status-pill pending">Not checked in</span>{% endif %}</td>
+          <td>{% if enrollment.attendance_checked_at %}{{ enrollment.attendance_checked_at|date:"g:i:s A" }}{% else %}—{% endif %}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="4" class="empty-cell">No students are assigned to this lecture.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endfor %}
+{% for exam in exams %}
+<section class="panel attendance-report-panel">
+  <div class="panel-heading">
+    <div><span class="eyebrow">{{ exam.section.name }} · Exam{% if exam.lecture %} · {{ exam.lecture.title }}{% endif %}</span><h2>{{ exam.title }}</h2></div>
+    <div class="report-lecture-meta">{% if exam.starts_at %}{{ exam.starts_at|date:"g:i A" }}–{{ exam.due_at|date:"g:i A" }}{% else %}Due {{ exam.due_at|date:"g:i A" }}{% endif %}<span>{{ exam.present_count }} / {{ exam.report_students|length }} checked in</span></div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Student</th><th>Academic no.</th><th>Attendance</th><th>Time checked</th></tr></thead>
+      <tbody>
+      {% for row in exam.report_students %}
+        <tr>
+          <td><strong>{{ row.student.full_name|default:row.student.email }}</strong><small class="table-sub">{{ row.student.email }}</small></td>
+          <td>{{ row.student.academic_number }}</td>
+          <td>{% if row.attended_on_date %}<span class="status-pill complete">Checked in</span>{% else %}<span class="status-pill pending">Not checked in</span>{% endif %}</td>
+          <td>{% if row.attendance_checked_at %}{{ row.attendance_checked_at|date:"g:i:s A" }}{% else %}—{% endif %}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="4" class="empty-cell">No students are assigned to this exam.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endfor %}
+{% if not lectures and not exams %}
+<section class="panel"><div class="empty-state"><span class="empty-icon">☑</span><h3>No lectures or exams on this date</h3><p>Choose another date or add a weekly schedule or exam.</p><a class="button secondary" href="{% url 'lectures' %}">View lectures</a></div></section>
+{% endif %}
+{% endblock %}

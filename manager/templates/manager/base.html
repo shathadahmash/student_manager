@@ -1,0 +1,16 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{% block title %}Campus Desk{% endblock %} · Campus Desk</title><link rel="stylesheet" href="{% static 'manager/style.css' %}">{% if not request.user.is_authenticated %}<link rel="stylesheet" href="{% static 'manager/login.css' %}">{% else %}<link rel="stylesheet" href="{% static 'manager/import.css' %}"><link rel="stylesheet" href="{% static 'manager/schedule.css' %}">{% if request.resolver_match.url_name == 'lectures' %}<link rel="stylesheet" href="{% static 'manager/lecture_list.css' %}">{% endif %}{% endif %}</head>
+<body>
+{% if request.user.is_authenticated %}<aside class="sidebar"><a class="brand" href="{% url 'dashboard' %}"><span class="brand-mark">C</span><span>Campus Desk<small>ACADEMIC MANAGER</small></span></a><nav>
+<a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"><span>⌂</span> Overview</a>
+<a href="{% url 'attendance_report' %}" class="{% if request.resolver_match.url_name == 'attendance_report' %}active{% endif %}"><span>☑</span> Attendance report</a>
+<a href="{% url 'section_calendar' %}" class="{% if 'calendar' in request.resolver_match.url_name %}active{% endif %}"><span>▦</span> Calendar</a>
+<a href="{% url 'students' %}" class="{% if 'student' in request.resolver_match.url_name %}active{% endif %}"><span>◉</span> Students</a>
+<a href="{% url 'sections' %}" class="{% if request.resolver_match.url_name == 'sections' %}active{% endif %}"><span>▦</span> Sections</a>
+<a href="{% url 'lectures' %}" class="{% if 'lecture' in request.resolver_match.url_name %}active{% endif %}"><span>▤</span> Lectures</a>
+<a href="{% url 'work_items' %}" class="{% if 'work' in request.resolver_match.url_name %}active{% endif %}"><span>✓</span> Homework & exams</a></nav>
+<div class="sidebar-bottom"><div class="user-chip"><div class="avatar">{{ request.user.username|slice:':1'|upper }}</div><div><strong>{{ request.user.username }}</strong><small>Administrator</small></div></div><form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="logout-link" type="submit">Sign out</button></form></div></aside>{% endif %}
+<main class="main {% if not request.user.is_authenticated %}main-auth{% endif %}">{% if request.user.is_authenticated %}<header class="topbar"><div><span class="eyebrow">STUDENT & ACADEMIC RECORDS</span><h1>{% block page_title %}Overview{% endblock %}</h1></div><div class="topbar-date">{{ today|date:"D, M j" }}</div></header>{% endif %}
+{% if messages %}<div class="messages">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% block content %}{% endblock %}{% if request.user.is_authenticated %}<footer>Campus Desk <span>· Local academic records</span></footer>{% endif %}</main></body></html>

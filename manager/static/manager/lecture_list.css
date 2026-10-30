@@ -1,0 +1,28 @@
+.lecture-list-intro{gap:16px}
+.lecture-filter-panel{margin-bottom:22px;padding:17px 20px}
+.lecture-filter-form{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+.lecture-filter-form label{width:min(230px,100%);margin:0}
+.lecture-filter-form .field{margin-top:5px}
+.lecture-clear-filter{padding:10px 0;color:#6b7890;font-size:11px;font-weight:700;text-decoration:none}
+.lecture-clear-filter:hover,.lecture-edit-link:hover{color:var(--blue-dark)}
+.lecture-results-heading{display:flex;align-items:center;justify-content:space-between;margin:0 0 13px}
+.lecture-results-heading h2{margin:0;font:700 16px Manrope,sans-serif}
+.lecture-results-heading span{color:var(--muted);font-size:11px}
+.lecture-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:16px}
+.lecture-list-card{min-width:0;padding:19px;background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 3px 12px #17243b08;transition:transform .15s,box-shadow .15s}
+.lecture-list-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px #17243b10}
+.lecture-list-card-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lecture-subject-label,.lecture-detail-label{color:#8792a5;font-size:9px;font-weight:700;letter-spacing:.7px;text-transform:uppercase}
+.lecture-list-card h3{margin:10px 0 16px;color:#243450;font:700 17px Manrope,sans-serif;overflow-wrap:anywhere}
+.lecture-card-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 12px}
+.lecture-card-details>div{min-width:0}
+.lecture-detail-label,.lecture-card-details strong{display:block}
+.lecture-card-details strong{margin-top:5px;color:#43516a;font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+.lecture-card-actions{display:flex;align-items:center;gap:14px;margin-top:18px;padding-top:14px;border-top:1px solid #eef0f4}
+.lecture-card-actions .button{padding:8px 11px;font-size:11px}
+.lecture-edit-link,.lecture-delete-link{color:var(--blue);font-size:10px;font-weight:700;text-decoration:none}
+.lecture-delete-link{margin-left:auto;color:var(--red)}
+.lecture-empty-state{text-align:center;padding:35px 20px}
+.lecture-empty-state h2{margin:0 0 7px;font:700 16px Manrope,sans-serif}
+.lecture-empty-state p{margin:0;color:var(--muted);font-size:12px}
+@media(max-width:560px){.lecture-list-intro{align-items:stretch;flex-direction:column}.lecture-filter-form{align-items:stretch}.lecture-filter-form label{width:100%}.lecture-filter-form .button{width:100%}.lecture-card-details{gap:12px 8px}.lecture-list-card{padding:16px}}
